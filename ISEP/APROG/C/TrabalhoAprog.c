@@ -1208,6 +1208,62 @@ void creditos()
     voltarAoMenu();
 }
 
+void preencherDados(equipa vetEquipa[], aluno vetAluno[],int *contadorAlunos, int *contadorEscolas, int *contadorAtividades, int *contadorEquipas, int matriz[][MAX_EQUIPAS-1][MAX_EQUIPAS*MAX_ALUNOSEQUIPA-1])
+{
+    //Primeiro preenche-as as 3 equipas
+    strcpy(vetEquipa[0].escola, "ISEP");
+    strcpy(vetEquipa[0].localidade, "Porto");
+    strcpy(vetEquipa[0].sigla, "Azuis");
+
+    strcpy(vetEquipa[1].escola, "FEUP");
+    strcpy(vetEquipa[1].localidade, "Porto");
+    strcpy(vetEquipa[1].sigla, "Verdes");
+
+    strcpy(vetEquipa[2].escola, "FCUP");
+    strcpy(vetEquipa[2].localidade, "Porto");
+    strcpy(vetEquipa[2].sigla, "Vermelhos");
+    *contadorEscolas=3;
+    *contadorEquipas=3;
+
+    //Depois adiciona-se 3 alunos
+    strcpy(vetAluno[0].escola, "ISEP");
+    vetAluno[0].genero='M';
+    vetAluno[0].idade=18;
+    strcpy(vetAluno[0].nome, "Pedro");
+
+    strcpy(vetAluno[1].escola, "FEUP");
+    vetAluno[1].genero='F';
+    vetAluno[1].idade=18;
+    strcpy(vetAluno[1].nome, "Sofia");
+
+    strcpy(vetAluno[2].escola, "FCUP");
+    vetAluno[2].genero='M';
+    vetAluno[2].idade=18;
+    strcpy(vetAluno[2].nome, "Joao");
+    *contadorAlunos=3;
+
+    //Depois adiciona-se 3 atividades:
+    vetAluno[0].ativ[0].contadorCorreto=20;
+    vetAluno[0].ativ[0].idAtividade=1;
+    vetAluno[0].ativ[0].tempo=30;
+    matriz[0][0][0]=1;
+
+    vetAluno[1].ativ[1].contadorCorreto=50;
+    vetAluno[1].ativ[1].idAtividade=2;
+    vetAluno[1].ativ[1].tempo=10;
+    matriz[1][1][1]=1;
+
+    vetAluno[2].ativ[2].contadorCorreto=30;
+    vetAluno[2].ativ[2].idAtividade=3;
+    vetAluno[2].ativ[2].tempo=60;
+    matriz[2][2][2]=1;
+    *contadorAtividades=3;
+
+    printf("Valores de alunos adicionados.");
+    voltarAoMenu();
+
+}
+
 void main()
 {
     short int menu;
@@ -1225,13 +1281,13 @@ void main()
         fflush(stdin);
         //Este printf está dividido em 2: o primeiro printf são as funções requesitadas no enunciado e o segundo são funcões ou comandos extra para o caso de alguma necessidade nao especificada no enunciado.
         printf("------Gestao Equipas------\nEscolha a opcao introduzindo o valor indicado\n1- Escrever um novo aluno\n2- Mostrar um aluno\n3- Apagar um aluno\n4- Escrever uma atividade\n5- Mostrar uma atividade\n6- Apagar uma atividade\n7- Mostrar os alunos de uma determinada equipa\n8- Total de respostas certas de uma equipa\n9- Media de respostas certas de uma equipa\n10- Media de idades de uma equipa\n11- Mostrar a equipa com menos tempo gasto numa determinada atividade\n12- Listar as equipas alfabeticamente\n");
-        printf("13- Criar uma nova equipa[Podem ser criadas mais %d equipas]\n14- Informacoes adicionais\n15- Mostrar todos os alunos\n16- Visualizar as atividades e equipas de um aluno\n17- Creditos\n18- Sair do programa\n--------------------------\n", MAX_EQUIPAS-contadorEquipas);
+        printf("13- Criar uma nova equipa[Podem ser criadas mais %d equipas]\n14- Informacoes adicionais\n15- Mostrar todos os alunos\n16- Visualizar as atividades e equipas de um aluno\n17- Creditos\n18- Preencher dados iniciais\n19- Sair do programa\n--------------------------\n", MAX_EQUIPAS-contadorEquipas);
         do{
             printf(">:");
             scanf("%d", &menu);
             //O fflush está aqui para o caso de ser introduzido em acidente(ou nao) um caracter, permitindo assim a introduçao de um integer
             fflush(stdin);
-        }while(menu<=0 || menu>18);
+        }while(menu<=0 || menu>19);
         switch(menu)
         {
             //Nota, os break são necessários senão o programa corre todos os comandos que há, depois de cada comando correr há necessidade de dar reset de menu para = 0 senão se fosse introduzido algum caracter o programa assumiria o valor que tinha previamente e correria essa opção de novo
@@ -1252,7 +1308,8 @@ void main()
             case 15: mostrarAlunosTodos(vetAlunos, &contadorAlunos); menu=0; break;
             case 16: visualizadorMatriz(matrizAtividadesEquipaAluno, &contadorAlunos, &contadorEquipas, &contadorAtividades, vetEquipas); menu=0; break;
             case 17: creditos(); menu=0; break;
-            case 18: menu=15; break;
+            case 18: preencherDados(vetEquipas, vetAlunos, &contadorAlunos, &contadorEscolas, &contadorAtividades, &contadorEquipas, matrizAtividadesEquipaAluno); menu=0; break;
+            case 19: menu=15; break;
             //O default está aqui se por alguma razão alguma coisa de mal acontecer ao int i o programa voltar ao menu, mas em teoria isto nunca deve correr.
             default: menu=0;
         }
